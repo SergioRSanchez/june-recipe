@@ -1,113 +1,223 @@
+'use client'
+
+import { useState } from 'react'
 import Image from 'next/image'
+import {
+  MinusCircle,
+  PlusCircle,
+  Utensils,
+  Soup,
+  ChevronLeft,
+  ChevronRight,
+} from 'lucide-react'
+
+import pamonha from '@/assets/pamonha.png'
+import pacoca from '@/assets/pacoca.png'
+import bolo from '@/assets/bolo.png'
+
+interface Recipe {
+  name: string
+  icon: string
+  description: string
+  ingredients: {
+    [key: string]: string
+  }
+  preparation: {
+    [key: string]: string
+  }
+}
 
 export default function Home() {
+  const [quantity, setQuantity] = useState(1)
+
+  const [recipeIndex, setRecipeIndex] = useState(0)
+
+  function increaseRecipeIndex() {
+    if (recipeIndex === 2) {
+      setRecipeIndex(0)
+    } else {
+      setRecipeIndex(recipeIndex + 1)
+    }
+  }
+
+  function decreaseRecipeIndex() {
+    if (recipeIndex === 0) {
+      setRecipeIndex(2)
+    } else {
+      setRecipeIndex(recipeIndex - 1)
+    }
+  }
+
+  const recipe: Recipe[] = [
+    {
+      name: 'Pamonha',
+      icon: 'pamonha',
+      description: 'Prato típico com milho verde ralado',
+      ingredients: {
+        0: `${1 * quantity} espiga de milho verde`,
+        1: `${1 * quantity} colher de sopa de açúcar`,
+        2: `${1 * quantity} colher de sopa de manteiga`,
+        3: 'Sal a gosto',
+        4: 'Palha de milho (para embrulhar)',
+      },
+      preparation: {
+        0: 'Descasque a espiga de milho e corte os grãos.',
+        1: 'Bata o milho, açucar, manteiga e sal no liquidificador.',
+        2: 'Coloque a massa nas palhas de milho e feche bem.',
+        3: 'Cozinhe em água fervente por cerca de 40 minutos.',
+        4: 'Deixe esfriar e sirva.',
+      },
+    },
+    {
+      name: 'Paçoca',
+      icon: 'paçoca',
+      description: 'Doce típico feito de amendoim',
+      ingredients: {
+        0: `${500 * quantity}g de amendoim torrado`,
+        1: `${1 * quantity} lata de leite condensado`,
+        2: `${1 * quantity} pacote de bolacha maizena`,
+      },
+      preparation: {
+        0: 'Bata o amendoim no liquidificador até que fique triturado.',
+        1: 'Misture todos os ingredientes em uma vasilha grande.',
+        2: 'Bata a bolacha no liquidificador e junte ao amendoim.',
+        3: 'Misture o leite condensado até que fique uma pasta.',
+        4: 'Coloque em uma forma untada e deixe descansar.',
+        5: 'Corte e sirva.',
+      },
+    },
+    {
+      name: 'Bolo de Fubá',
+      icon: 'bolo',
+      description: 'Bolo tradicional',
+      ingredients: {
+        0: `${3 * quantity} ovos`,
+        1: `${2 * quantity} xícaras de fubá`,
+        2: `${0.5 * quantity} copo americano de óleo`,
+        3: `${1 * quantity} colher de fermento em pó`,
+        4: `${2 * quantity} xícaras de chá de açúcar`,
+        5: `${3 * quantity} colheres de sopa de farinha de trigo`,
+        6: `${1 * quantity} copo de leite`,
+      },
+      preparation: {
+        0: 'Bata todos os ingredientes no liquidificador.',
+        1: 'Coloque em uma forma untada e enfarinhada.',
+        2: 'Leve ao forno pré aquecido e deixe assar, por cerca de 40 minutos.',
+      },
+    },
+  ]
+
+  const currentRecipe = recipe[recipeIndex]
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className="flex h-screen flex-col">
+      {/* CIMA */}
+      <div className="flex flex-1 flex-col items-center justify-center bg-[#FEECE0] py-3 sm:flex-row sm:py-14">
+        {recipeIndex === 0 ? (
+          <Image
+            src={pamonha}
+            alt="pamonha"
+            className="h-[300px] w-[300px] sm:h-[350px] sm:w-[350px] "
+          />
+        ) : null}
+        {recipeIndex === 1 ? (
+          <Image
+            src={pacoca}
+            alt="paçoca"
+            className="h-[300px] w-[300px] sm:h-[350px] sm:w-[350px] "
+          />
+        ) : null}
+        {recipeIndex === 2 ? (
+          <Image
+            src={bolo}
+            alt="bolo de fubá"
+            className="h-[300px] w-[300px] sm:h-[350px] sm:w-[350px] "
+          />
+        ) : null}
+        <div className="flex flex-col gap-3 text-center sm:gap-7 sm:text-start">
+          <div className="flex items-center justify-center text-center sm:justify-start sm:gap-3">
+            <button onClick={decreaseRecipeIndex}>
+              <ChevronLeft
+                color="#9B6647"
+                className="h-7 w-7 transition-all duration-200 hover:scale-110 hover:brightness-75 sm:h-8 sm:w-8"
+              />
+            </button>
+            <h1 className="text-6xl font-bold text-[#58190A] sm:text-7xl">
+              {recipe[recipeIndex].name}
+            </h1>
+            <button onClick={increaseRecipeIndex}>
+              <ChevronRight
+                color="#9B6647"
+                className="h-7 w-7 transition-all duration-200 hover:scale-110 hover:brightness-75 sm:h-8 sm:w-8"
+              />
+            </button>
+          </div>
+          <p className="text-3xl text-[#58190A] sm:text-4xl">
+            {recipe[recipeIndex].description}
+          </p>
+          <div className="flex items-center justify-center gap-4 text-3xl text-[#9B6647] sm:justify-start">
+            <span>Porções</span>
+            <div className="flex items-center gap-5">
+              <button onClick={() => setQuantity(quantity - 1)}>
+                <MinusCircle
+                  color="#9B6647"
+                  className="h-7 w-7 transition-all duration-200 hover:scale-110 hover:brightness-75 sm:h-8 sm:w-8"
+                />
+              </button>
+              <span className="font-sans text-3xl sm:text-4xl">
+                0{quantity}
+              </span>
+              <button onClick={() => setQuantity(quantity + 1)}>
+                <PlusCircle
+                  color="#9B6647"
+                  className="h-7 w-7 transition-all duration-200 hover:scale-110 hover:brightness-75 sm:h-8 sm:w-8"
+                />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+      {/* BAIXO */}
+      <div className="flex flex-1 flex-col justify-between gap-5 bg-[#9B6647] p-4 sm:flex-row sm:px-12 sm:py-16">
+        {/* Ingredientes */}
+        <div className="flex flex-col gap-3 sm:ml-[90px] sm:gap-8">
+          <div className="flex items-center gap-2">
+            <Utensils color="#FEECE0" className="h-7 w-7 sm:h-8 sm:w-8" />
+            <p className="text-3xl font-bold text-[#FEECE0] sm:text-4xl">
+              Ingredientes
+            </p>
+          </div>
+
+          {/* Itens */}
+          <div className="text-xl text-white sm:text-2xl">
+            <ol className="list-inside list-disc leading-8 sm:leading-9">
+              {Object.keys(currentRecipe.ingredients).map((key) => (
+                <li key={key}>{currentRecipe.ingredients[key]}</li>
+              ))}
+            </ol>
+          </div>
+        </div>
+
+        {/* Modo de Preparo */}
+        <div className="flex flex-col gap-3 sm:mr-[90px] sm:gap-8">
+          <div className="flex items-center gap-2">
+            <Soup color="#FEECE0" className="h-7 w-7 sm:h-8 sm:w-8" />
+            <p className="text-3xl font-bold text-[#FEECE0] sm:text-4xl">
+              Modo de preparo
+            </p>
+          </div>
+
+          {/* Itens */}
+          <div className="text-xl text-white sm:text-2xl">
+            <ol className="max-w-[650px] list-inside list-decimal leading-8 sm:leading-9">
+              {Object.keys(currentRecipe.preparation).map((key) => (
+                <li key={key}>{currentRecipe.preparation[key]}</li>
+              ))}
+            </ol>
+          </div>
+        </div>
       </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </div>
   )
 }
