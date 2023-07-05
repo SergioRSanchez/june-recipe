@@ -32,6 +32,14 @@ export default function Home() {
 
   const [recipeIndex, setRecipeIndex] = useState(0)
 
+  function decreaseQuantity() {
+    if (quantity === 1) {
+      setQuantity(1)
+    } else {
+      setQuantity(quantity - 1)
+    }
+  }
+
   function increaseRecipeIndex() {
     if (recipeIndex === 2) {
       setRecipeIndex(0)
@@ -158,7 +166,7 @@ export default function Home() {
           <div className="flex items-center justify-center gap-4 text-3xl text-[#9B6647] sm:justify-start">
             <span>Porções</span>
             <div className="flex items-center gap-5">
-              <button onClick={() => setQuantity(quantity - 1)}>
+              <button onClick={decreaseQuantity}>
                 <MinusCircle
                   color="#9B6647"
                   className="h-7 w-7 transition-all duration-200 hover:scale-110 hover:brightness-75 sm:h-8 sm:w-8"
